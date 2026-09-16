@@ -1,0 +1,47 @@
+import java.util.*;
+import java.util.stream.*;
+
+public class task2 {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        int n = sc.nextInt();
+        List<Reading> readings = new ArrayList<>();
+
+        for (int i = 0; i < n; i++) {
+            String sensorId = sc.next();
+            int temp = sc.nextInt();
+            readings.add(new Reading(sensorId, temp));
+        }
+
+        // 1. Filter temperatures > 50
+        // 2. Group by sensor ID
+        // 3. Compute average temperature per sensor
+        Map<String, Double> avgBySensor = readings.stream()
+                .filter(r -> r.temperature > 50)
+                .collect(Collectors.groupingBy(
+                        r -> r.sensorId,
+                        Collectors.averagingInt(r -> r.temperature)
+                ));
+
+        // 4. Sort sensors by average temperature descending
+        List<Map.Entry<String, Double>> sorted = avgBySensor.entrySet().stream()
+                .sorted((e1, e2) -> Double.compare(e2.getValue(), e1.getValue()))
+                .collect(Collectors.toList());
+
+        // Output
+        for (Map.Entry<String, Double> e : sorted) {
+            System.out.println(e.getKey() + " " + e.getValue());
+        }
+    }
+
+    static class Reading {
+        String sensorId;
+        int temperature;
+
+        Reading(String sensorId, int temperature) {
+            this.sensorId = sensorId;
+            this.temperature = temperature;
+        }
+    }
+}
