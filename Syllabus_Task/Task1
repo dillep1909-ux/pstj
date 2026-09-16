@@ -1,0 +1,51 @@
+import java.util.Scanner;
+
+class BankAccount {
+    private double balance;
+
+    public BankAccount(double initialBalance) {
+        this.balance = initialBalance;
+    }
+
+    public void deposit(double amount) {
+        if (amount > 0) {
+            balance += amount;
+        }
+    }
+
+    public void withdraw(double amount) {
+        if (amount > 0 && amount <= balance) {
+            balance -= amount;
+        }
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+}
+
+public class Task5 {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        if (!scanner.hasNextInt()) return;
+        int n = scanner.nextInt();
+
+        BankAccount account = new BankAccount(0.0);
+
+        for (int i = 0; i < n; i++) {
+            String operation = scanner.next();
+            double amount = scanner.nextDouble();
+
+            if (operation.equalsIgnoreCase("Deposit")) {
+                account.deposit(amount);
+            } else if (operation.equalsIgnoreCase("Withdraw")) {
+                account.withdraw(amount);
+            }
+        }
+
+        System.out.println((long) account.getBalance());
+
+        scanner.close();
+    }
+}
